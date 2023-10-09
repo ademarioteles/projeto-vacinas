@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface VacinaRepository extends MongoRepository<Vacina,String> {
 
-    List<Vacina> obterTodos();
 }

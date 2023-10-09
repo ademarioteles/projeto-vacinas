@@ -1,27 +1,23 @@
 package com.vacinas.ap1.entity;
 
 import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Vacina {
-    //Fabricante
+
+    private String nome;
+
     private String fabricante;
 
-    //Lote
     private String lote;
 
-    //Data da validade
     private String data_validade;
 
-    //Número de doses
-    private Integer total_de_doses;
+    private Integer numero_de_doses;
 
-    //Intervalo minimo entre doses em dias
-    private Integer intervalo_entre_doses;
+    private Integer intervalo_doses;
 
 }

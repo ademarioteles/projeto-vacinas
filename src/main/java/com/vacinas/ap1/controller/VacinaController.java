@@ -1,29 +1,31 @@
 package com.vacinas.ap1.controller;
 
-import com.vacinas.ap1.entity.Vacina;
-import com.vacinas.ap1.service.ServiceVacina;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+        import com.vacinas.ap1.entity.Vacina;
+        import com.vacinas.ap1.service.ServiceVacina;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.http.HttpStatus;
+        import org.springframework.http.ResponseEntity;
+        import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+        import java.util.List;
 
 @RestController
+@RequestMapping("/vacinas")
 public class VacinaController {
     @Autowired
-    ServiceVacina servicevacina;
+    private ServiceVacina serviceVacina;
 
-    @GetMapping("/vacinas")
-    public ResponseEntity<List<Vacina>> obterTodos(){
-        return ResponseEntity.ok(servicevacina.obterTodos());
+    //Método para listar as vacinas
+    @GetMapping
+    public ResponseEntity<List<Vacina>> obterTodos() {
+        List<Vacina> vacinas = serviceVacina.obterTodos();
+        return ResponseEntity.ok(vacinas);
     }
-    @GetMapping("/vacinas/{vacinas}")
-    public void inserir(@PathVariable String vacinas){
-        Vacina vacine = new Vacina();
-        vacine.setFabricante(vacinas);
-        servicevacina.inserir(vacine);
+
+    //Método para adicionar vacina
+    @PostMapping
+    public ResponseEntity<?> inserir(@RequestBody Vacina novaVacina) {
+        serviceVacina.inserir(novaVacina);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
