@@ -8,6 +8,7 @@ package com.vacinas.ap1.controller;
         import org.springframework.validation.annotation.Validated;
         import org.springframework.web.bind.annotation.*;
 
+        import javax.validation.Valid;
         import java.util.List;
 
 @RestController
@@ -16,6 +17,14 @@ public class VacinaController {
     @Autowired
     private ServiceVacina serviceVacina;
 
+    //Método para adicionar vacina
+
+    @PostMapping("/vacinas/cadastrar")
+    public ResponseEntity inserir(@RequestBody  @Valid Vacina novaVacina) {
+        serviceVacina.inserir(novaVacina);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     //Método para listar as vacinas
     @GetMapping("/vacinas")
     public ResponseEntity<List<Vacina>> obterTodos() {
@@ -23,10 +32,5 @@ public class VacinaController {
         return ResponseEntity.ok(vacinas);
     }
 
-    //Método para adicionar vacina
-    @PostMapping("/vacinas/cadastrar")
-    public ResponseEntity<?> inserir(@RequestBody Vacina novaVacina) {
-        serviceVacina.inserir(novaVacina);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+
 }

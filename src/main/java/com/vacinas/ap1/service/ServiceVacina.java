@@ -11,10 +11,14 @@ import java.util.List;
 public class ServiceVacina {
     @Autowired
     VacinaRepository vacinaRepository;
-    public List<Vacina> obterTodos(){
+
+    public List<Vacina> obterTodos() {
+
         return vacinaRepository.findAll();
     }
-    public void inserir(Vacina vacina){
-        vacinaRepository.insert(vacina);
+
+    public void inserir(Vacina vacina) {
+        vacinaRepository.save(vacina);
     }
 }
+
