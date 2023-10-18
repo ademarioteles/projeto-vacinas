@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class Mensagem {
 
-    private String messagem;
+    private String mensagem;
 
 
 }

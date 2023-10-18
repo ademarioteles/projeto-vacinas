@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class Vacina {
 
+    private String id;
 
     @NotEmpty(message = "O nome da vacina não foi informado!")
     private String nome;

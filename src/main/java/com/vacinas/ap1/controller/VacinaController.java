@@ -1,6 +1,7 @@
 package com.vacinas.ap1.controller;
 
         import com.vacinas.ap1.entity.Vacina;
+        import com.vacinas.ap1.exceptions.VacinaNotFoundException;
         import com.vacinas.ap1.service.ServiceVacina;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.http.HttpStatus;
@@ -32,5 +33,14 @@ public class VacinaController {
         return ResponseEntity.ok(vacinas);
     }
 
-
+    @GetMapping("/vacinas/{id}")
+    public ResponseEntity<Vacina> obterPorId(@PathVariable String id) {
+        if (serviceVacina.obterPorId(id) == null) {
+            throw new VacinaNotFoundException("Paciente não encontrado!");
+        }
+        return ResponseEntity.status(200).body(serviceVacina.obterPorId(id));
+    }
 }
+
+
+

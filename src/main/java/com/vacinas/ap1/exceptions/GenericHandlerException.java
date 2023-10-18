@@ -19,6 +19,21 @@ import java.util.List;
 @ControllerAdvice
 public class GenericHandlerException extends ResponseEntityExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericHandlerException.class);
+
+    @ExceptionHandler(LoteRepetidoException.class)
+    protected ResponseEntity handleException(LoteRepetidoException e) {
+        Mensagem mensagem = new Mensagem("O lote informado já encontra-se cadastrado em nossa base de dados!");
+        LOGGER.info("Tratamentação de exceção LoteRepetidoException: " + mensagem);
+        return new ResponseEntity(mensagem, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(VacinaNotFoundException.class)
+    protected ResponseEntity handleException(VacinaNotFoundException e) {
+        Mensagem mensagem = new Mensagem("Vacina(s) não encontrado(s)");
+        LOGGER.info("Tratamentação de exceção VacinaNotFoundException: " + mensagem);
+        return new ResponseEntity(mensagem, HttpStatus.NOT_FOUND);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<Mensagem> message = new ArrayList<>();
