@@ -34,6 +34,13 @@ public class GenericHandlerException extends ResponseEntityExceptionHandler {
         return new ResponseEntity(mensagem, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(VacinasRetornoVazioException.class)
+    protected ResponseEntity handleException(VacinasRetornoVazioException e) {
+        Mensagem mensagem = new Mensagem("Nenhuma vacina encontrada");
+        LOGGER.info("Tratamentação de exceção VacinasRetornoVazioException: " + mensagem);
+        return new ResponseEntity(mensagem, HttpStatus.NOT_FOUND);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<Mensagem> message = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.vacinas.ap1.controller;
 
         import com.vacinas.ap1.entity.Vacina;
         import com.vacinas.ap1.exceptions.VacinaNotFoundException;
+        import com.vacinas.ap1.exceptions.VacinasRetornoVazioException;
         import com.vacinas.ap1.service.ServiceVacina;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.http.HttpStatus;
@@ -30,13 +31,16 @@ public class VacinaController {
     @GetMapping("/vacinas")
     public ResponseEntity<List<Vacina>> obterTodos() {
         List<Vacina> vacinas = serviceVacina.obterTodos();
+        if (vacinas.isEmpty()) {
+            throw new VacinasRetornoVazioException("Nenhuma vacina encontrada.");
+        }
         return ResponseEntity.ok(vacinas);
     }
 
     @GetMapping("/vacinas/{id}")
     public ResponseEntity<Vacina> obterPorId(@PathVariable String id) {
         if (serviceVacina.obterPorId(id) == null) {
-            throw new VacinaNotFoundException("Paciente não encontrado!");
+            throw new VacinaNotFoundException("Vacina não encontrado!");
         }
         return ResponseEntity.status(200).body(serviceVacina.obterPorId(id));
     }
