@@ -1,11 +1,12 @@
 package com.vacinas.ap1.controller;
 
+        import com.vacinas.ap1.entity.Mensagem;
         import com.vacinas.ap1.entity.Vacina;
         import com.vacinas.ap1.exceptions.VacinaNotFoundException;
-        import com.vacinas.ap1.exceptions.VacinasRetornoVazioException;
         import com.vacinas.ap1.service.ServiceVacina;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.http.HttpStatus;
+        import org.springframework.http.MediaType;
         import org.springframework.http.ResponseEntity;
         import org.springframework.validation.annotation.Validated;
         import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,9 @@ public class VacinaController {
     @PostMapping("/vacinas/cadastrar")
     public ResponseEntity inserir(@RequestBody  @Valid Vacina novaVacina) {
         serviceVacina.inserir(novaVacina);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new Mensagem("Vacina cadastrada com sucesso!"));
     }
 
     //Método para listar as vacinas
@@ -32,17 +35,18 @@ public class VacinaController {
     public ResponseEntity<List<Vacina>> obterTodos() {
         List<Vacina> vacinas = serviceVacina.obterTodos();
         if (vacinas.isEmpty()) {
-            throw new VacinasRetornoVazioException("Nenhuma vacina encontrada.");
+            throw new VacinaNotFoundException("Vacina não encontrada!");
         }
-        return ResponseEntity.ok(vacinas);
+        return ResponseEntity.status(200).body(vacinas);
     }
 
     @GetMapping("/vacinas/{id}")
     public ResponseEntity<Vacina> obterPorId(@PathVariable String id) {
         if (serviceVacina.obterPorId(id) == null) {
-            throw new VacinaNotFoundException("Vacina não encontrado!");
+            throw new VacinaNotFoundException("Vacina não encontrada!");
         }
-        return ResponseEntity.status(200).body(serviceVacina.obterPorId(id));
+        return ResponseEntity.status(200)
+                .body(serviceVacina.obterPorId(id));
     }
 }
 

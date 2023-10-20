@@ -14,15 +14,20 @@ public class Vacina {
     private String id;
 
     @NotEmpty(message = "O nome da vacina não foi informado!")
+    @NotNull(message = "O nome da vacina não foi informado!")
     private String nome;
 
     @NotEmpty(message = "O fabricante não foi informado!")
+    @NotNull(message = "O fabricante da vacina não foi informado!")
     private String fabricante;
 
     @NotEmpty(message = "O lote não foi informado!")
+    @NotNull(message = "O lote da vacina não foi informado!")
     private String lote;
 
     @NotEmpty(message = "A data de validade não foi informada!")
+    @NotNull(message = "A data de validade não foi informada!")
+
     private String data_validade;
 
     @NotNull(message = "O número de doses não foi informado!")

@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.MediaTypeNotSupportedStatusException;
+import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
@@ -29,18 +31,10 @@ public class GenericHandlerException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(VacinaNotFoundException.class)
     protected ResponseEntity handleException(VacinaNotFoundException e) {
-        Mensagem mensagem = new Mensagem("Vacina(s) não encontrado(s)");
+        Mensagem mensagem = new Mensagem("Vacina(s) não encontrada(s)");
         LOGGER.info("Tratamentação de exceção VacinaNotFoundException: " + mensagem);
         return new ResponseEntity(mensagem, HttpStatus.NOT_FOUND);
     }
-
-    @ExceptionHandler(VacinasRetornoVazioException.class)
-    protected ResponseEntity handleException(VacinasRetornoVazioException e) {
-        Mensagem mensagem = new Mensagem("Nenhuma vacina encontrada");
-        LOGGER.info("Tratamentação de exceção VacinasRetornoVazioException: " + mensagem);
-        return new ResponseEntity(mensagem, HttpStatus.NOT_FOUND);
-    }
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<Mensagem> message = new ArrayList<>();
