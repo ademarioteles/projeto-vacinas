@@ -12,8 +12,6 @@ WORKDIR /app
 
 COPY --from=maven /app/target/ap1-0.0.1-SNAPSHOT.jar .
 
-RUN rm -rf /app/src/
-
 EXPOSE 8080
 
 CMD ["java", "-jar", "ap1-0.0.1-SNAPSHOT.jar"]
