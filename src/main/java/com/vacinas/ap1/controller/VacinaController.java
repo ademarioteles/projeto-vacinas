@@ -42,11 +42,13 @@ public class VacinaController {
 
     @GetMapping("/vacinas/{id}")
     public ResponseEntity<Vacina> obterPorId(@PathVariable String id) {
-        if (serviceVacina.obterPorId(id) == null) {
+        Vacina vacina = serviceVacina.obterPorId(id);
+
+        if (vacina == null) {
             throw new VacinaNotFoundException("Vacina não encontrada!");
         }
-        return ResponseEntity.status(200)
-                .body(serviceVacina.obterPorId(id));
+
+        return ResponseEntity.ok(vacina);
     }
 }
 
