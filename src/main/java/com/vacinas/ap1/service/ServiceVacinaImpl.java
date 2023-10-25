@@ -1,7 +1,6 @@
 package com.vacinas.ap1.service;
 
 import com.vacinas.ap1.entity.Vacina;
-import com.vacinas.ap1.exceptions.LoteRepetidoException;
 import com.vacinas.ap1.repository.VacinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
 
     @Override
     public Vacina obterPorId(String id) {
-        for (Vacina vacin : obterTodos()) {
+        for (Vacina vacin : obterTodos()) {//Como o id  é uma string não é possível utilizar o FindById
             if (vacin.getId().equals(id)) {
                 return vacin;
             }
@@ -34,13 +33,35 @@ public class ServiceVacinaImpl implements ServiceVacina {
     }
 
     @Override
-    public boolean encontrarVacina(Vacina vacina) {
-        for (Vacina vacin : obterTodos()) {
-            if (vacina.getLote().equals(vacin.getLote())) {
+    public boolean existeVacina(Vacina vacina) {
+        for (Vacina vacin : obterTodos()) {//Verificação ignorando o Id
+            if (vacin.getNome().equals(vacina.getNome()) &&
+            vacin.getFabricante().equals(vacina.getFabricante()) &&
+            vacin.getLote().equals(vacina.getLote()) &&
+            vacin.getData_validade().equals(vacina.getData_validade()) &&
+            vacin.getNumero_de_doses().equals(vacina.getNumero_de_doses())&&
+            vacin.getIntervalo_doses().equals(vacina.getIntervalo_doses())
+            ) {
                 return true;
             }
         }
         return false;
     }
+
+    @Override
+    public void deletarPorId(String id) {
+        vacinaRepository.deleteById(id);
+    }
+
+    @Override
+    public void deletarTodos() {
+        vacinaRepository.deleteAll();
+    }
+
+    @Override
+    public void editar(Vacina vacina) {
+        vacinaRepository.save(vacina);
+    }
+
 
 }
