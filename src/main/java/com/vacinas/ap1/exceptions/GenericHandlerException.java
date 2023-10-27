@@ -20,16 +20,15 @@ import java.util.List;
 public class GenericHandlerException extends ResponseEntityExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericHandlerException.class);
 
-
     @ExceptionHandler(VacinaNotInsertExeption.class)//Não será possivel cadastrar duas vezes a vacina com a mesma informação
     protected ResponseEntity handleException(VacinaNotInsertExeption e) {
-        Mensagem mensagem = new Mensagem("A vacina com as informações passadas já existe na base!");
+        Mensagem mensagem = new Mensagem(e.getMessage());
         LOGGER.info("Tratamentação de exceção VacinaNotInsertExeption: " + mensagem);
         return new ResponseEntity(mensagem, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(VacinaNotFoundException.class)
     protected ResponseEntity handleException(VacinaNotFoundException e) {
-        Mensagem mensagem = new Mensagem("Vacina(s) não encontrada(s)");
+        Mensagem mensagem = new Mensagem(e.getMessage());
         LOGGER.info("Tratamentação de exceção VacinaNotFoundException: " + mensagem);
         return new ResponseEntity(mensagem, HttpStatus.NOT_FOUND);
     }

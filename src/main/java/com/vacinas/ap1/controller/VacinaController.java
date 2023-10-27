@@ -26,7 +26,7 @@ public class VacinaController {
     @PostMapping("/vacinas/cadastrar")
     public ResponseEntity inserir(@RequestBody  @Valid Vacina novaVacina) {
         if(serviceVacina.existeVacina(novaVacina)){
-            throw new VacinaNotInsertExeption("Vacina já existe na base!");
+            throw new VacinaNotInsertExeption("Vacina existente na base!");
         }
         serviceVacina.inserir(novaVacina);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -39,55 +39,67 @@ public class VacinaController {
     public ResponseEntity<List<Vacina>> obterTodos() {
         List<Vacina> vacinas = serviceVacina.obterTodos();
         if (vacinas.isEmpty()) {
-            throw new VacinaNotFoundException("Vacina não encontrada!");
+            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)!");
         }
-        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(vacinas);
+        return ResponseEntity.status(200)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(vacinas);
     }
-
+    //Metodo para pegar vacinas por id
     @GetMapping("/vacinas/{id}")
     public ResponseEntity<Vacina> obterPorId(@PathVariable String id) {
         if (serviceVacina.obterPorId(id) == null) {
-            throw new VacinaNotFoundException("Vacina não encontrada!");
+            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)!");
         }
-        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON)
+        return ResponseEntity.status(200)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(serviceVacina.obterPorId(id));
     }
+    //Metodo para editar vacina pelo seu body
     @PutMapping("/vacinas/editar")
     public ResponseEntity<Vacina> editarVacina(@RequestBody  @Valid Vacina vacinaEditada){
-        if (serviceVacina.obterPorId(vacinaEditada.getId()) == null || vacinaEditada.getId() == null) {
-            throw new VacinaNotFoundException("Vacina não encontrada!");
+        if (serviceVacina.obterPorId(vacinaEditada.getId()) == null) {
+            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)!");
         }
         serviceVacina.editar(vacinaEditada);
-        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON)
+        return ResponseEntity.status(200)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(serviceVacina.obterPorId(vacinaEditada.getId()));
     }
+    //Metodo que edita a vacina por id e requer um body
     @PutMapping("/vacinas/{id}/editar")
     public ResponseEntity<Vacina> editarVacinaPorId(@PathVariable String id, @RequestBody  @Valid Vacina vacinaEditada){
         if (serviceVacina.obterPorId(id) == null) {
-            throw new VacinaNotFoundException("Vacina não encontrada!");
+            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)!");
         }
         vacinaEditada.setId(id);
         serviceVacina.editar(vacinaEditada);
-        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON)
+        return ResponseEntity.status(200)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(serviceVacina.obterPorId(id));
     }
+
+    //Metodo que exclui vacinas por id
     @DeleteMapping("/vacinas/{id}/excluir")
     public ResponseEntity<Mensagem> deletarPorId(@PathVariable String id) {
         if (serviceVacina.obterPorId(id) == null) {
-            throw new VacinaNotFoundException("Vacina não encontrada!");
+            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)!");
         }
         serviceVacina.deletarPorId(id);
-        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON)
+        return ResponseEntity.status(200)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(new Mensagem("Vacina excluída com sucesso!"));
     }
+    //Metodo que exclui todos os b
     @DeleteMapping("/vacinas/excluir")
     public ResponseEntity<Mensagem> deletarTodos() {
         if (serviceVacina.obterTodos().isEmpty()) {
-            throw new VacinaNotFoundException("Vacina não encontrada!");
+            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)!");
         }
         serviceVacina.deletarTodos();
-        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON)
-                .body(new Mensagem("Vacina(s) excluída(s) com sucesso!"));
+        return ResponseEntity.status(200)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new Mensagem("Vacina excluída com sucesso!"));
     }
 }
 

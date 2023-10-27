@@ -67,6 +67,11 @@ class VacinaControllerTests {
 		Assertions.assertThrows(ConstraintViolationException.class, () -> vacinaController.inserir(vacin));
 	}
 	@Test
+	void insercaoDataValidadeController(){//Retornara uma excecao caso o formato da data não esta igual a  1991-01-21
+		vacin.setData_validade("1991/01/21");
+		Assertions.assertThrows(ConstraintViolationException.class, () -> vacinaController.inserir(vacin));
+	}
+	@Test
 	void vacinaExistenteController(){
 		when(vacinaServiceImpl.existeVacina(vacin)).thenReturn(true);// Atribui que a vacina já existe na base e impedir o cadastro
 		Assertions.assertThrows(VacinaNotInsertExeption.class, () -> vacinaControllerInject.inserir(vacin));//Nesse momento de inserção o usuario já existe
