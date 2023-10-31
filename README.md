@@ -26,7 +26,6 @@ Esta é uma API de Gerenciamento de Vacinação que permite o controle e registr
 - [Referências](#referências)
 
   
-  
 ##  📝  Visão Geral
 
 A API é projetada para fornecer as seguintes funcionalidades:
