@@ -30,9 +30,9 @@ Esta é uma API de Gerenciamento de Vacinação que permite o controle e registr
 
 A API é projetada para fornecer as seguintes funcionalidades:
 
-```Registro de vacinações de pacientes.```
-```Gerenciamento de informações sobre vacinas e pacientes.```
-```Estatísticas sobre vacinação, como doses aplicadas, doses atrasadas e vacinas por fabricante.```
+- Registro de vacinações de pacientes.
+- Gerenciamento de informações sobre vacinas e pacientes.
+- Estatísticas sobre vacinação, como doses aplicadas, doses atrasadas e vacinas por fabricante.
 
 ## 📦 Requisitos
 
