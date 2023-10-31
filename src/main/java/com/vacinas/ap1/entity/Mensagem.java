@@ -9,8 +9,5 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Mensagem {
-
     private String mensagem;
-
-
 }

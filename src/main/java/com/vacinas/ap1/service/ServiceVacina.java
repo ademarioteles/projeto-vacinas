@@ -10,5 +10,9 @@ public interface ServiceVacina {
     List<Vacina> obterTodos();
     Vacina obterPorId(String id);
     void inserir(Vacina vacina);
-    boolean encontrarVacina(Vacina vacina);
+    boolean existeVacina(Vacina vacina);
+    void deletarPorId(String id);
+    void deletarTodos();
+
+    void editar(Vacina vacina);
 }
