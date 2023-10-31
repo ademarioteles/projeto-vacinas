@@ -56,7 +56,7 @@ git clone https://github.com/seu-usuario/api-gerenciamento-vacinacao.git
 
 ### Instale as dependências:
 ```bash
-pip install -r requirements.txt
+
 ```
 
 ###  Configure as variáveis de ambiente (por exemplo, em um arquivo .env) para definir as configurações do banco de dados, URLs de outras APIs, etc.
