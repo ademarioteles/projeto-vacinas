@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Objects;
 
 
 @Data
@@ -36,4 +37,16 @@ public class Vacina {
 
     private Integer intervalo_doses;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vacina vacina = (Vacina) o;
+        return Objects.equals(nome, vacina.nome) && Objects.equals(fabricante, vacina.fabricante) && Objects.equals(lote, vacina.lote) && Objects.equals(data_validade, vacina.data_validade) && Objects.equals(numero_de_doses, vacina.numero_de_doses) && Objects.equals(intervalo_doses, vacina.intervalo_doses);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, fabricante, lote, data_validade, numero_de_doses, intervalo_doses);
+    }
 }

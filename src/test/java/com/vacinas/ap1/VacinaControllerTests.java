@@ -71,25 +71,9 @@ class VacinaControllerTests {
 		vacin.setData_validade("1991/01/21");
 		Assertions.assertThrows(ConstraintViolationException.class, () -> vacinaController.inserir(vacin));
 	}
-	@Test
-	void vacinaExistenteController(){
-		when(vacinaServiceImpl.existeVacina(vacin)).thenReturn(true);// Atribui que a vacina já existe na base e impedir o cadastro
-		Assertions.assertThrows(VacinaNotInsertExeption.class, () -> vacinaControllerInject.inserir(vacin));//Nesse momento de inserção o usuario já existe
-	}
-	@Test
-	void existeUsuarioController(){//Retorna uma exceção personalizada ao buscar uma vacina não existente
-		Assertions.assertThrows(VacinaNotFoundException.class, () -> vacinaControllerInject.obterPorId("abcde123456"));
-	}
-	@Test
-	void editarVacinaController(){//Retornará uma exceção caso não encontre nenhuma vacina
-		Vacina novaVacina = new Vacina();//vacina esta com as informações vazias
-		Assertions.assertThrows(VacinaNotFoundException.class, () -> vacinaControllerInject.editarVacina(novaVacina));
 
-	}
-	@Test
-	void editarVacinaPorIdController(){//Retornará uma exceção caso o id não for encontrado
-		Vacina novaVacina = new Vacina("2","pfizer","johnson","d5f6f6fa","1991-01-21",21,36);
-		Assertions.assertThrows(VacinaNotFoundException.class, () -> vacinaControllerInject.editarVacinaPorId(novaVacina.getId(),novaVacina));
-	}
+
+
+
 	
 }

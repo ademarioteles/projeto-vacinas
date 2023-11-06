@@ -13,6 +13,9 @@ public interface ServiceVacina {
     boolean existeVacina(Vacina vacina);
     void deletarPorId(String id);
     void deletarTodos();
-
+    Vacina compareEdite(Vacina vacinaU, Vacina vacinaD);
     void editar(Vacina vacina);
+    void editarPorId(String id, Vacina vacina);
+    void editarParcialPorId(String id, Vacina vacina);
+    void editarParcial(Vacina vacina);
 }
