@@ -32,6 +32,13 @@ public class GenericHandlerException extends ResponseEntityExceptionHandler {
         LOGGER.info("Tratamentação de exceção VacinaNotFoundException: " + mensagem);
         return new ResponseEntity(mensagem, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity handleInternalServerError(Exception e) {
+        LOGGER.error("Erro interno do servidor: " + e.getMessage(), e);
+        Mensagem mensagem = new Mensagem("Desculpe, ocorreu um erro interno no servidor. Nossa equipe de TI foram notificados e estão trabalhando para resolver o problema.");
+        return new ResponseEntity(mensagem, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<Mensagem> message = new ArrayList<>();
