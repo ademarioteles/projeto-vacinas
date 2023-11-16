@@ -51,7 +51,7 @@ Para facilitar a verificação rápida da API, você pode usar o seguinte endpoi
 
 Endpoint: **GET** 
 ```bash
-https://wb-api-vacinas-v2.azurewebsites.net/pacientes
+https://wb-api-vacinas-v1.azurewebsites.net/sanhok
 ```
 Descrição: Retorna uma mensagem simples indicando que a API está em funcionamento.
 
@@ -66,7 +66,7 @@ Se você encontrar problemas ao acessar o endpoint online ou simplesmente deseja
 ### Clone este repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/api-gerenciamento-vacinacao.git
+git clone https://github.com/ademarioteles/projeto-vacinas-ap1.git
 ```
 
 <!-- ### Instale as dependências:
