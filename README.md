@@ -9,7 +9,8 @@
 
 ## 🚀 Começando
 
-Esta é uma API de Gerenciamento de Vacinação que permite o controle e registro de vacinações de pacientes, gerenciamento de vacinas e pacientes, e fornece informações estatísticas sobre a vacinação. A API foi desenvolvida para atender aos requisitos do projeto "Programação Web 2 - Oficial 2".
+
+Esta é uma API de Gerenciamento de Vacinação desenvolvida pela equipe Sanhok permite o controle e registro de vacinações de pacientes, gerenciamento de vacinas e pacientes, e fornece informações estatísticas sobre a vacinação. A API foi desenvolvida para atender aos requisitos do projeto "Programação Web 2 - Oficial 2".
 
 ## 📋 Conteúdo do README
 
@@ -18,11 +19,11 @@ Esta é uma API de Gerenciamento de Vacinação que permite o controle e registr
 - [Configuração](#configuração)
 - [Uso](#uso)
 - [Endpoints](#endpoints)
-- [Testes](#testes)
-- [Docker](#docker)
+<!-- - [Testes](#testes) -->
+<!-- - [Docker](#docker) -->
 - [Contribuição](#contribuição)
 - [Autores](#autores)
-- [Licença](#licença)
+<!-- - [Licença](#licença) -->
 - [Referências](#referências)
 
   
@@ -39,14 +40,28 @@ A API é projetada para fornecer as seguintes funcionalidades:
 Antes de iniciar, certifique-se de que possui os seguintes requisitos:
 
 - [Java (versão 17)](https://www.java.com/)
-- [MongoDB (versão X.X.X)](https://www.mongodb.com/)
-- [Postman (versão X.X.X)](https://www.postman.com/)
-- [Docker](https://www.docker.com/)
-- [Docker-Compose](https://www.docker.com/)
+- [MongoDB (versão 1.40.4)](https://www.mongodb.com/try/download/compass)
+- [Postman ](https://www.postman.com/downloads/)
+<!-- - [Docker](https://www.docker.com/)
+- [Docker-Compose](https://www.docker.com/) -->
 
+##  Endpoint de Teste
+
+Para facilitar a verificação rápida da API, você pode usar o seguinte endpoint de teste:
+
+Endpoint: **GET** 
+```bash
+https://wb-api-vacinas-v2.azurewebsites.net/pacientes
+```
+Descrição: Retorna uma mensagem simples indicando que a API está em funcionamento.
+
+```bash
+{"status": "API de Gerenciamento de Vacinação em Desenvolvimento"}
+```
 
 ## ⚙️ Configuração
 
+Se você encontrar problemas ao acessar o endpoint online ou simplesmente deseja executar a API localmente para desenvolvimento ou teste, siga estas instruções:
 
 ### Clone este repositório:
 
@@ -54,12 +69,12 @@ Antes de iniciar, certifique-se de que possui os seguintes requisitos:
 git clone https://github.com/seu-usuario/api-gerenciamento-vacinacao.git
 ```
 
-### Instale as dependências:
+<!-- ### Instale as dependências:
 ```bash
 
-```
+``` -->
 
-###  Configure as variáveis de ambiente (por exemplo, em um arquivo .env) para definir as configurações do banco de dados, URLs de outras APIs, etc.
+###  Configure as variáveis de ambiente no arquivo (application.properties) para definir as configurações do banco de dados, URLs de outras APIs, etc.
 
 ```bash
 MONGODB_URI=mongodb://localhost:27017/vacinacao
@@ -71,7 +86,7 @@ API_VACINAS_URL=http://localhost:8081
 
 ```bash
 
-A API estará acessível em http://localhost:5000.
+A API estará acessível em http://localhost:8080.
 ```
 
 ###  ▶️ Uso
@@ -84,18 +99,17 @@ A API oferece vários endpoints para criar, ler, atualizar e excluir registros d
 - [/pacientes](#pacientes): Gerenciamento de informações sobre pacientes.
 - [/vacinacoes](#vacinacoes): Registro de vacinações de pacientes.
 
+<!-- Consulte a documentação dos endpoints para obter detalhes sobre como usar cada um deles. -->
 
-Consulte a documentação dos endpoints para obter detalhes sobre como usar cada um deles.
+<!-- ### 🧪 Testes
+A API inclui testes automatizados para garantir o funcionamento correto dos endpoints. Execute os testes da seguinte maneira: -->
 
-### 🧪 Testes
-A API inclui testes automatizados para garantir o funcionamento correto dos endpoints. Execute os testes da seguinte maneira:
-
-```bash
+<!-- ```bash
 
 Comando de testes
 
-```
-###  🐳 Docker
+``` -->
+<!-- ###  🐳 Docker
 
 Se desejar, você pode executar a API em um contêiner Docker. Use o Docker Compose para criar o ambiente completo, incluindo o banco de dados MongoDB e outras dependências:
 
@@ -105,7 +119,7 @@ xxxxxxxxxxxx
 
 ```
 
-A API estará acessível em http://localhost:5000, e o banco de dados MongoDB estará em execução no contêiner.
+A API estará acessível em http://localhost:5000, e o banco de dados MongoDB estará em execução no contêiner. -->
 
 ## 🤝 Contribuição
 
@@ -120,16 +134,17 @@ Se desejar contribuir para o desenvolvimento deste projeto, siga estas etapas:
 ## ✍️ Autores
 
 
-- Ademario Teles - [GitHub](https://github.com/usuario1)
-- Ana Beatriz  - [GitHub](https://github.com/usuario2)
-- Maiara Rodrigues  - [GitHub](https://github.com/usuario3)
-- Vanessa Santana  - [GitHub](https://github.com/usuario4)
-- Victor Caetano - [GitHub](https://github.com/usuario5)
-- Taysa Barbosa  - [GitHub](https://github.com/usuario6)
+- Ademario Teles - [GitHub](https://github.com/ademarioteles)
+- Ana Beatriz  - [GitHub](https://github.com/anabiajferreira)
+- Maiara Rodrigues  - [GitHub](hthttps://github.com/maia-ra)
+- Vanessa Santana  - [GitHub](https://github.com/nessa1408)
+- Victor Caetano - [GitHub](https://github.com/vctor-c)
+- Taysa Barbosa  - [GitHub](https://github.com/taysa-barbosa)
 
-
-## 📄 Licença
-
-Este projeto é licenciado sob a Licença XYZ - consulte o arquivo [LICENSE](LICENSE) para obter detalhes.
 
 ## 📚 Referências
+
+- https://www.java.com/pt-BR
+- https://www.mongodb.com/products/tools/compass
+- https://spring.io/projects/spring-boot
+- https://www.postman.com/
