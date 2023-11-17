@@ -23,7 +23,13 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-
+        
+      - name: Run Integration Tests
+        run: mvn verify -P integration-tests
+        
+      - name: Run Acceptance Tests
+        run: mvn verify -P acceptance-tests
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
