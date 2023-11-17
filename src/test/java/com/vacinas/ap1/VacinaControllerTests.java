@@ -2,8 +2,6 @@ package com.vacinas.ap1;
 
 import com.vacinas.ap1.controller.VacinaController;
 import com.vacinas.ap1.entity.Vacina;
-import com.vacinas.ap1.exceptions.VacinaNotFoundException;
-import com.vacinas.ap1.exceptions.VacinaNotInsertExeption;
 import com.vacinas.ap1.service.ServiceVacinaImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,6 +68,23 @@ class VacinaControllerTests {
 	void insercaoDataValidadeController(){//Retornara uma excecao caso o formato da data não esta igual a  1991-01-21
 		vacin.setData_validade("1991/01/21");
 		Assertions.assertThrows(ConstraintViolationException.class, () -> vacinaController.inserir(vacin));
+	}
+	@Test
+	void editarVacinaController(){
+		Assertions.assertThrows(ConstraintViolationException.class, () -> vacinaController.editarVacina(new Vacina()));
+	}
+	@Test
+	void editarPorIdController(){
+
+		Assertions.assertThrows(ConstraintViolationException.class, () -> vacinaController.editarVacinaPorId("2", new Vacina()));
+
+	}
+
+	@Test
+	void testeSanhok(){
+		Assertions.assertEquals(ResponseEntity.status(200)
+				.contentType(MediaType.TEXT_PLAIN)
+				.body("API de Gerenciamento de Vacinação desenvolvida pela equipe Sanhok para atender aos requisitos do projeto 'Programação Web 2 - Oficial 2'"),vacinaController.testeSanhok());
 	}
 
 

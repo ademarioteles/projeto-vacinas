@@ -56,7 +56,7 @@ https://wb-api-vacinas-v1.azurewebsites.net/sanhok
 Descrição: Retorna uma mensagem simples indicando que a API está em funcionamento.
 
 ```bash
-{"status": "API de Gerenciamento de Vacinação em Desenvolvimento"}
+"API de Gerenciamento de Vacinação desenvolvida pela equipe Sanhok para atender aos requisitos do projeto 'Programação Web 2 - Oficial 2'"
 ```
 
 ## ⚙️ Configuração
