@@ -98,7 +98,7 @@ public class VacinaController {
                 .body(new Mensagem("Vacina excluída com sucesso!"));
     }
 
-    @GetMapping("/vacinas/sanhok")
+    @GetMapping("/sanhok")
     public ResponseEntity testeSanhok() {
         return ResponseEntity.status(200)
                 .contentType(MediaType.TEXT_PLAIN)
