@@ -19,7 +19,13 @@ public class ServiceVacinaImpl implements ServiceVacina {
 
     @Override
     public List<Vacina> obterTodos() {
-        return vacinaRepository.findAll();
+        List<Vacina> vacinas = vacinaRepository.findAll();
+
+        if (vacinas.isEmpty()) {
+            throw new VacinaNotFoundException("Nenhuma vacina encontrada.");
+        }
+
+        return vacinas;
     }
 
     @Override
