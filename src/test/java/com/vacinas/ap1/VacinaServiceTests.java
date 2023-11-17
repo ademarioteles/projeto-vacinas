@@ -1,9 +1,6 @@
 package com.vacinas.ap1;
-
-import com.vacinas.ap1.controller.VacinaController;
 import com.vacinas.ap1.entity.Vacina;
 import com.vacinas.ap1.exceptions.VacinaNotFoundException;
-import com.vacinas.ap1.exceptions.VacinaNotInsertExeption;
 import com.vacinas.ap1.repository.VacinaRepository;
 import com.vacinas.ap1.service.ServiceVacinaImpl;
 import org.junit.jupiter.api.Assertions;
@@ -11,12 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +50,40 @@ class VacinaServiceTests {
 		Assertions.assertEquals(vacin, vacinaServiceInject.obterPorId("1"));
 	}
 	@Test
+	void obterPorIdServiceError(){
+		Assertions.assertThrows(VacinaNotFoundException.class,()->vacinaServiceInject.obterPorId("2"));
+	}
+	@Test
 	void existeVacinaService(){
 		Assertions.assertEquals(true, vacinaServiceInject.existeVacina(vacin));
+	}
+	@Test
+	void compareEditeTest(){
+		Vacina vacinaEditar = new Vacina();
+		vacinaEditar.setNome("adalberto");
+		vacinaEditar.setFabricante("Pfezer");
+		vacinaEditar = vacinaServiceInject.compareEdite(vacin,vacinaEditar);
+		Assertions.assertEquals(vacinaEditar.getNome(),vacin.getNome());
+		Assertions.assertEquals(vacinaEditar.getFabricante(),vacin.getFabricante());
+		Assertions.assertEquals(vacinaEditar.getData_validade(),vacin.getData_validade());
+		Assertions.assertEquals(vacinaEditar.getNumero_de_doses(),vacin.getNumero_de_doses());
+	}
+
+	@Test
+	void deletarPorIdError(){
+		Assertions.assertThrows(VacinaNotFoundException.class,()->vacinaServiceInject.deletarPorId("2"));
+	}
+	@Test
+	void EditarPorIdError(){
+		Assertions.assertThrows(VacinaNotFoundException.class,()->vacinaServiceInject.editarPorId("2", new Vacina()));
+	}
+	@Test
+	void EditarError(){
+		Assertions.assertThrows(VacinaNotFoundException.class,()->vacinaServiceInject.editar(new Vacina()));
+	}
+	@Test
+	void deletarParcialmenteError(){
+		Assertions.assertThrows(VacinaNotFoundException.class,()->vacinaServiceInject.editarParcial(new Vacina()));
 	}
 
 }

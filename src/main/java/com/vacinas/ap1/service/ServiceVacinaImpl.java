@@ -1,5 +1,6 @@
 package com.vacinas.ap1.service;
 
+import com.vacinas.ap1.controller.VacinaController;
 import com.vacinas.ap1.entity.Vacina;
 import com.vacinas.ap1.exceptions.VacinaNotFoundException;
 import com.vacinas.ap1.exceptions.VacinaNotInsertExeption;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 public class ServiceVacinaImpl implements ServiceVacina {
+    private static final Logger LOGGER = LoggerFactory.getLogger(VacinaController.class);
 
     @Autowired
     VacinaRepository vacinaRepository;
@@ -39,6 +41,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
         if(vacinaEncontrada == null || this.obterTodos().isEmpty() || this.obterTodos() == null){
             throw  new VacinaNotFoundException("Vacina não encontrado!");
         }
+        LOGGER.info("A vacina com id " + id +" foi retornada!");
         return vacinaEncontrada;
     }
 
@@ -48,12 +51,14 @@ public class ServiceVacinaImpl implements ServiceVacina {
             throw new VacinaNotInsertExeption("Vacina existente na base!");
         }
         vacinaRepository.insert(vacina);
+        LOGGER.info("Vacina com id " + vacina.getId() +" foi retornada!");
     }
 
     @Override
     public boolean existeVacina(Vacina vacina) {
         for (Vacina vacin : obterTodos()) {//Verificação ignorando o Id
             if (vacin.equals(vacina)) {
+                LOGGER.info("Vacina com id " + vacin.getId() +" existente na base!");
                 return true;
             }
         }
@@ -66,6 +71,8 @@ public class ServiceVacinaImpl implements ServiceVacina {
             throw new VacinaNotFoundException("Vacina(s) não encontrada(s)!");
         }
         vacinaRepository.deleteById(id);
+        LOGGER.info("Vacina com id " + id+" existente na base!");
+
     }
 
     @Override
@@ -74,6 +81,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
             throw new VacinaNotFoundException("Vacina(s) não encontrada(s)!");
         }
         vacinaRepository.deleteAll();
+        LOGGER.info("Todas as vacinas foram deletadas!");
     }
 
     @Override
@@ -101,6 +109,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
         vacina.setId(vacina.getId());
         vacina = this.compareEdite(vacina,vacinaEncontrada);
         vacinaRepository.save(vacina);
+        LOGGER.info("Vacina com id "+ vacina.getId() +" foi editada parcialmente!");
     }
 
     @Override
@@ -112,6 +121,8 @@ public class ServiceVacinaImpl implements ServiceVacina {
         vacina.setId(id);
         vacina = this.compareEdite(vacina,vacinaEncontrada);
         vacinaRepository.save(vacina);
+        LOGGER.info("Vacina com id "+ id +" foi editada por completo!");
+
     }
 
     @Override
@@ -120,6 +131,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
             throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
         }
         vacinaRepository.save(vacina);
+        LOGGER.info("Vacina com id "+ vacina.getId() +" foi editada por completo!");
     }
     @Override
     public void editarPorId(String id, Vacina vacina) {
