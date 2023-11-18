@@ -43,7 +43,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
             throw new VacinaNotInsertExeption("Vacina existente na base!");
         }
         vacinaRepository.insert(vacina);
-        LOGGER.info("Vacina com id " + vacina.getId() +" foi retornada!");
+        LOGGER.info("Vacina com id " + vacina.getId() +" foi inserida com sucesso!");
     }
 
     @Override
