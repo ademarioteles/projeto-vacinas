@@ -18,4 +18,5 @@ public interface ServiceVacina {
     void editarPorId(String id, Vacina vacina);
     void editarParcialPorId(String id, Vacina vacina);
     void editarParcial(Vacina vacina);
+    void inject();
 }

@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -21,13 +23,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
 
     @Override
     public List<Vacina> obterTodos() {
-        List<Vacina> vacinas = vacinaRepository.findAll();
-
-        if (vacinas.isEmpty()) {
-            throw new VacinaNotFoundException("Nenhuma vacina encontrada.");
-        }
-
-        return vacinas;
+        return vacinaRepository.findAll();
     }
 
     @Override
@@ -38,10 +34,6 @@ public class ServiceVacinaImpl implements ServiceVacina {
                 return vacin;
             }
         }
-        if(vacinaEncontrada == null || this.obterTodos().isEmpty() || this.obterTodos() == null){
-            throw  new VacinaNotFoundException("Vacina não encontrado!");
-        }
-        LOGGER.info("A vacina com id " + id +" foi retornada!");
         return vacinaEncontrada;
     }
 
@@ -110,6 +102,26 @@ public class ServiceVacinaImpl implements ServiceVacina {
         vacina = this.compareEdite(vacina,vacinaEncontrada);
         vacinaRepository.save(vacina);
         LOGGER.info("Vacina com id "+ vacina.getId() +" foi editada parcialmente!");
+    }
+
+    @Override
+    public void inject() {
+        Vacina vacinaUm = new Vacina(null,"Moderna","Moderna","M456B","2023-06-30",2,16);
+        Vacina vacinaDois = new Vacina(null,"Johnson & Johnson","Janssen","J789C","2023-11-15",1,17);
+        Vacina vacinaTres = new Vacina(null,"Novavax","Novavax","N555H","2023-03-31",2,21);
+        Vacina vacinaQuatro = new Vacina(null,"CureVac","CureVac","C666I","2023-12-15",2,28);
+        Vacina vacinaCinco = new Vacina(null,"Pfizer-BioNTech","Pfizer","P123A","2023-12-31",2,21);
+        List<Vacina> vacinaInjectadas = new ArrayList<>();
+        vacinaInjectadas.addAll(Arrays.asList(vacinaUm, vacinaDois, vacinaTres, vacinaQuatro, vacinaCinco));
+        for(Vacina vacina:vacinaInjectadas){
+           for(Vacina vacin:obterTodos()){
+               if(vacina.getId() == vacin.getId()){
+                   vacinaInjectadas.remove(vacina);
+               }
+           }
+        }
+        vacinaRepository.insert(vacinaInjectadas);
+
     }
 
     @Override

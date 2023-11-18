@@ -49,10 +49,7 @@ class VacinaServiceTests {
 	void obterPorIdService(){
 		Assertions.assertEquals(vacin, vacinaServiceInject.obterPorId("1"));
 	}
-	@Test
-	void obterPorIdServiceError(){
-		Assertions.assertThrows(VacinaNotFoundException.class,()->vacinaServiceInject.obterPorId("2"));
-	}
+
 	@Test
 	void existeVacinaService(){
 		Assertions.assertEquals(true, vacinaServiceInject.existeVacina(vacin));
