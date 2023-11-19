@@ -106,8 +106,8 @@ public class ServiceVacinaImpl implements ServiceVacina {
 
     @Override
     public void inject() {
-        Vacina vacinaUm = new Vacina("65582566c691757a205e3302","Moderna","Moderna","M456B","2023-06-30",2,16);
-        Vacina vacinaDois = new Vacina("65582566c691757a205e3303","Johnson & Johnson","Janssen","J789C","2023-11-15",2,17);
+        Vacina vacinaUm = new Vacina("65582566c691757a205e3302","Moderna","Moderna","M456B","2023-06-30",3,16);
+        Vacina vacinaDois = new Vacina("65582566c691757a205e3303","Johnson & Johnson","Janssen","J789C","2023-11-15",4,17);
         Vacina vacinaTres = new Vacina("65582566c691757a205e3304","Novavax","Novavax","N555H","2023-03-31",2,21);
         Vacina vacinaQuatro = new Vacina("65582566c691757a205e3305","CureVac","CureVac","C666I","2023-12-15",2,28);
         Vacina vacinaCinco = new Vacina("65582566c691757a205e3306","Pfizer-BioNTech","Pfizer","P123A","2023-12-31",2,21);
