@@ -34,7 +34,7 @@ public class VacinaController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(novaVacina);
     }
-    @PostMapping("/vacinas/inject")
+    @PostMapping("/vacinas/inject")//Responsavel por injectar valores de vacinas de forma automatica
     public ResponseEntity<List<Vacina>> inject(){
         serviceVacina.inject();
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(serviceVacina.obterTodos());

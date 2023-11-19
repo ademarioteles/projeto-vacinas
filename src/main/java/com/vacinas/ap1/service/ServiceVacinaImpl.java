@@ -77,7 +77,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
     }
 
     @Override
-    public Vacina compareEdite(Vacina vacinaU, Vacina vacinaD) {
+    public Vacina compareEdite(Vacina vacinaU, Vacina vacinaD) {//Preenche atributos vazios com objetos já existente no banco
         if (vacinaU.getNome() == null) {
             vacinaU.setNome(vacinaD.getNome());
         }if (vacinaU.getFabricante() == null) {
