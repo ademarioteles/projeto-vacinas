@@ -34,7 +34,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
                 return vacin;
             }
         }
-        return vacinaEncontrada;
+        throw new VacinaNotInsertExeption("Vacina existente na base!");
     }
 
     @Override

@@ -27,7 +27,7 @@ public class VacinaController {
 
     //Método para adicionar vacina
 
-    @PostMapping("/vacinas/cadastrar")
+    @PostMapping("/vacinas")
     public ResponseEntity<Vacina> inserir(@RequestBody  @Valid Vacina novaVacina) {
         serviceVacina.inserir(novaVacina);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -95,7 +95,7 @@ public class VacinaController {
                 .body(new Mensagem("Vacina excluída com sucesso!"));
     }
     //Metodo que exclui todas as vacinas
-    @DeleteMapping("/vacinas/todos")
+    @DeleteMapping("/vacinas")
     public ResponseEntity<Mensagem> deletarTodos() {
         serviceVacina.deletarTodos();
         return ResponseEntity.status(200)
