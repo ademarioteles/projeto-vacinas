@@ -10,14 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,13 +42,13 @@ public class ServiceVacinaImpl implements ServiceVacina {
 
     @Override
     public void inserir(Vacina vacina) {
-        if(this.existeVacina(vacina)){
+        if (this.existeVacina(vacina)) {
             throw new VacinaNotInsertExeption("Vacina existente na base!");
         } else if (this.dataNoFuturo(vacina.getData_validade())) {
             throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
-        }else if(this.loteExistente(vacina)) {
+        } else if (this.loteExistente(vacina)) {
             throw new VacinaNotInsertExeption("Lote informado existente na base!");
-        }else if (this.nomeVacinaExistente(vacina) && this.loteExistente(vacina)) {
+        } else if (this.nomeVacinaExistente(vacina) && this.loteExistente(vacina)) {
             throw new VacinaNotInsertExeption("O nome da vacina informado já existe na base com o mesmo lote!");
         }
 
@@ -60,7 +57,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
         vacina.setNome(vacina.getNome().toUpperCase());
         vacina.setFabricante(vacina.getFabricante().toUpperCase());
         vacinaRepository.insert(vacina);
-        LOGGER.info("Vacina com id " + vacina.getId() +" foi inserida com sucesso!");
+        LOGGER.info("Vacina com id " + vacina.getId() + " foi inserida com sucesso!");
     }
 
     @Override
@@ -70,15 +67,18 @@ public class ServiceVacinaImpl implements ServiceVacina {
         if (vacina == null) {
             throw new VacinaNotFoundException("Vacina não encontrado!");
         } else if (vacina.getNumero_de_doses() <= 0) {
-        throw new VacinaNotInsertExeption("O número de doses deve ser maior que zero.");
+            throw new VacinaNotInsertExeption("O número de doses deve ser maior que zero.");
         } else if (vacina.getIntervalo_doses() < 0) {
-        throw new VacinaNotInsertExeption("O intervalo de doses deve ser positivo.");
-        }else if (this.nomeVacinaExistente(vacina) && this.loteExistente(vacina)
+            throw new VacinaNotInsertExeption("O intervalo de doses deve ser positivo.");
+        } else if (this.nomeVacinaExistente(vacina) && this.loteExistente(vacina)
                 && (!vacinaEncontrado.getLote().equals(vacina.getLote())
-                && !vacinaEncontrado.getNome().equals(vacina.getNome())) ) {
+                && !vacinaEncontrado.getNome().equals(vacina.getNome()))) {
             throw new VacinaNotInsertExeption("O nome da vacina informado já existe na base com o mesmo lote!");
         } else if (this.dataNoFuturo(vacina.getData_validade())) {
-        throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
+            throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
+        }
+        if (!this.formatoDataValido(vacina.getData_validade())) {
+            throw new VacinaNotInsertExeption("Formato inválido de data de validade!");
         }
 
         vacina.setId(vacina.getId());
@@ -98,7 +98,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
         Vacina vacinaEncontrada = this.obterPorId(id);
         if (id == null || vacina == null || vacinaEncontrada == null) {
             throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
-        }else if (vacina.getNumero_de_doses() <= 0) {
+        } else if (vacina.getNumero_de_doses() <= 0) {
             throw new VacinaNotInsertExeption("O número de doses deve ser maior que zero.");
         } else if (vacina.getIntervalo_doses() < 0) {
             throw new VacinaNotInsertExeption("O intervalo de doses deve ser positivo.");
@@ -109,6 +109,10 @@ public class ServiceVacinaImpl implements ServiceVacina {
         } else if (this.dataNoFuturo(vacina.getData_validade())) {
             throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
         }
+        if (!this.formatoDataValido(vacina.getData_validade())) {
+            throw new VacinaNotInsertExeption("Formato inválido de data de validade!");
+        }
+
         vacina.setId(vacina.getId());
         vacina.setLote(vacina.getLote().toUpperCase());
         vacina.setNome(vacina.getNome().toUpperCase());
@@ -124,8 +128,9 @@ public class ServiceVacinaImpl implements ServiceVacina {
             throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
         }
         vacinaRepository.save(vacina);
-        LOGGER.info("Vacina com id "+ vacina.getId() +" foi editada por completo!");
+        LOGGER.info("Vacina com id " + vacina.getId() + " foi editada por completo!");
     }
+
     @Override
     public void editarPorId(String id, Vacina vacina) {
         if (vacina.getId() == null || this.obterPorId(vacina.getId()) == null) {
@@ -133,7 +138,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
         }
         vacina.setId(id);
         this.editar(vacina);
-        LOGGER.info("Vacina com id "+ vacina.getId() +" foi editada por completo!");
+        LOGGER.info("Vacina com id " + vacina.getId() + " foi editada por completo!");
     }
 
 
@@ -141,7 +146,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
     public boolean existeVacina(Vacina vacina) {
         for (Vacina vacin : obterTodos()) {//Verificação ignorando o Id
             if (vacin.equals(vacina)) {
-                LOGGER.info("Vacina com id " + vacin.getId() +" existente na base!");
+                LOGGER.info("Vacina com id " + vacin.getId() + " existente na base!");
                 return true;
             }
         }
@@ -169,7 +174,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
             LocalDate dataValidade = LocalDate.parse(dataValidadeString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
             // Comparar com a data atual
-            return dataValidade.isAfter(LocalDate.now());
+            return dataValidade.isBefore(LocalDate.now());
         } catch (DateTimeParseException e) {
             // Adicionar log para registrar a exceção
             LOGGER.error("Erro ao converter a data de validade: {}", e.getMessage(), e);
@@ -183,7 +188,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
             throw new VacinaNotFoundException("Vacina(s) não encontrada(s)!");
         }
         vacinaRepository.deleteById(id);
-        LOGGER.info("Vacina com id " + id+" existente na base!");
+        LOGGER.info("Vacina com id " + id + " existente na base!");
 
     }
 
@@ -200,13 +205,17 @@ public class ServiceVacinaImpl implements ServiceVacina {
     public Vacina compareEdite(Vacina vacinaU, Vacina vacinaD) {//Preenche atributos vazios com objetos já existente no banco
         if (vacinaU.getNome() == null) {
             vacinaU.setNome(vacinaD.getNome());
-        }if (vacinaU.getFabricante() == null) {
+        }
+        if (vacinaU.getFabricante() == null) {
             vacinaU.setFabricante(vacinaD.getFabricante());
-        }  if (vacinaU.getLote() == null) {
+        }
+        if (vacinaU.getLote() == null) {
             vacinaU.setLote(vacinaD.getLote());
-        } if (vacinaU.getData_validade() == null) {
+        }
+        if (vacinaU.getData_validade() == null) {
             vacinaU.setData_validade(vacinaD.getData_validade());
-        } if (vacinaU.getNumero_de_doses() == null) {
+        }
+        if (vacinaU.getNumero_de_doses() == null) {
             vacinaU.setNumero_de_doses(vacinaD.getNumero_de_doses());
         }
         return vacinaU;
@@ -215,14 +224,24 @@ public class ServiceVacinaImpl implements ServiceVacina {
 
     @Override
     public void inject() {
-        Vacina vacinaUm = new Vacina("65582566c691757a205e3302","Moderna","Moderna","M456B","2023-06-30",3,16);
-        Vacina vacinaDois = new Vacina("65582566c691757a205e3303","Johnson & Johnson","Janssen","J789C","2023-11-15",4,17);
-        Vacina vacinaTres = new Vacina("65582566c691757a205e3304","Novavax","Novavax","N555H","2023-03-31",2,21);
-        Vacina vacinaQuatro = new Vacina("65582566c691757a205e3305","CureVac","CureVac","C666I","2023-12-15",2,28);
-        Vacina vacinaCinco = new Vacina("65582566c691757a205e3306","Pfizer-BioNTech","Pfizer","P123A","2023-12-31",2,21);
+        Vacina vacinaUm = new Vacina("65582566c691757a205e3302", "Moderna", "Moderna", "M456B", "2023-06-30", 3, 16);
+        Vacina vacinaDois = new Vacina("65582566c691757a205e3303", "Johnson & Johnson", "Janssen", "J789C", "2023-11-15", 4, 17);
+        Vacina vacinaTres = new Vacina("65582566c691757a205e3304", "Novavax", "Novavax", "N555H", "2023-03-31", 2, 21);
+        Vacina vacinaQuatro = new Vacina("65582566c691757a205e3305", "CureVac", "CureVac", "C666I", "2023-12-15", 2, 28);
+        Vacina vacinaCinco = new Vacina("65582566c691757a205e3306", "Pfizer-BioNTech", "Pfizer", "P123A", "2023-12-31", 2, 21);
         List<Vacina> vacinaInjectadas = new ArrayList<>(Arrays.asList(vacinaUm, vacinaDois, vacinaTres, vacinaQuatro, vacinaCinco));
         vacinaRepository.saveAll(vacinaInjectadas);
     }
 
-
+    @Override
+    public boolean formatoDataValido(String dataValidadeString) {
+        try {
+            // Tenta fazer o parsing da data para garantir que o formato seja válido
+            LocalDate.parse(dataValidadeString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            return true;
+        } catch (DateTimeParseException e) {
+            LOGGER.error("Formato inválido de data: {}", e.getMessage(), e);
+            return false;
+        }
+    }
 }

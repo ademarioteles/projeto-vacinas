@@ -28,4 +28,6 @@ public interface ServiceVacina {
 
 
     void inject();
+
+    boolean formatoDataValido(String dataValidadeString);
 }
