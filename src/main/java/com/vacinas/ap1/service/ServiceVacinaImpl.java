@@ -10,8 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,7 +40,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
                 return vacin;
             }
         }
-        throw new VacinaNotInsertExeption("Vacina existente na base!");
+        throw new VacinaNotFoundException("Vacina existente na base!");
     }
 
     @Override
@@ -44,10 +50,91 @@ public class ServiceVacinaImpl implements ServiceVacina {
         }
         else if(this.loteExistente(vacina)){
             throw new VacinaNotInsertExeption("Lote informado existente na base!");
+        }else if (this.nomeVacinaExistente(vacina)) {
+            throw new VacinaNotInsertExeption("O nome da vacina informado existente na base!");
+        } else if (this.dataNoFuturo(vacina.getData_validade())) {
+            throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
         }
+
+        vacina.setLote(vacina.getLote().toUpperCase());
+        vacina.setNome(vacina.getNome().toUpperCase());
+        vacina.setFabricante(vacina.getFabricante().toUpperCase());
         vacinaRepository.insert(vacina);
         LOGGER.info("Vacina com id " + vacina.getId() +" foi inserida com sucesso!");
     }
+
+    @Override
+    public void editarParcial(Vacina vacina) {
+        Vacina vacinaEncontrado = this.obterPorId(vacina.getId());
+
+        if (vacina == null) {
+            throw new VacinaNotFoundException("Vacina não encontrado!");
+        } else if (this.loteExistente(vacina)) {
+        throw new VacinaNotInsertExeption("Lote informado existente na base!");
+        } else if (vacina.getNumero_de_doses() <= 0) {
+        throw new VacinaNotInsertExeption("O número de doses deve ser maior que zero.");
+        } else if (vacina.getIntervalo_doses() < 0) {
+        throw new VacinaNotInsertExeption("O intervalo de doses deve ser positivo.");
+        } else if (this.nomeVacinaExistente(vacina)) {
+        throw new VacinaNotInsertExeption("O nome da vacina informado existente na base!");
+        } else if (this.dataNoFuturo(vacina.getData_validade())) {
+        throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
+        }
+
+        vacina.setId(id);
+        vacina.setLote(vacina.getLote().toUpperCase());
+        vacina.setNome(vacina.getNome().toUpperCase());
+        vacina.setFabricante(vacina.getFabricante().toUpperCase());
+        vacina = this.compareEdite(vacina, vacinaEncontrado);
+        if (!vacina.equals(vacinaEncontrado)) {
+            vacinaRepository.save(vacina);
+            LOGGER.info("Paciente com id " + vacina.getId() + " editado parcialmente com sucesso!");
+
+        }
+    }
+
+    @Override
+    public void editarParcialPorId(String id, Vacina vacina) {
+        Vacina vacinaEncontrada = this.obterPorId(id);
+        if (id == null || vacina == null || vacinaEncontrada == null) {
+            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
+        } else if (this.loteExistente(vacina)) {
+            throw new VacinaNotInsertExeption("Lote informado existente na base!");
+        } else if (vacina.getNumero_de_doses() <= 0) {
+            throw new VacinaNotInsertExeption("O número de doses deve ser maior que zero.");
+        } else if (vacina.getIntervalo_doses() < 0) {
+            throw new VacinaNotInsertExeption("O intervalo de doses deve ser positivo.");
+        } else if (this.nomeVacinaExistente(vacina)) {
+            throw new VacinaNotInsertExeption("O nome da vacina informado existente na base!");
+        } else if (this.dataNoFuturo(vacina.getData_validade())) {
+            throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
+        }
+        vacina.setId(id);
+        vacina.setLote(vacina.getLote().toUpperCase());
+        vacina.setNome(vacina.getNome().toUpperCase());
+        vacina.setFabricante(vacina.getFabricante().toUpperCase());
+        vacina = this.compareEdite(vacina, vacinaEncontrada);
+        vacinaRepository.save(vacina);
+        LOGGER.info("Vacina com id " + id + " foi editada por completo!");
+    }
+
+    @Override
+    public void editar(Vacina vacina) {
+        if (vacina.getId() == null || this.obterPorId(vacina.getId()) == null) {
+            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
+        }
+        vacinaRepository.save(vacina);
+        LOGGER.info("Vacina com id "+ vacina.getId() +" foi editada por completo!");
+    }
+    @Override
+    public void editarPorId(String id, Vacina vacina) {
+        if (vacina.getId() == null || this.obterPorId(vacina.getId()) == null) {
+            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
+        }
+        vacina.setId(id);
+        this.editar(vacina);
+    }
+
 
     @Override
     public boolean existeVacina(Vacina vacina) {
@@ -62,8 +149,31 @@ public class ServiceVacinaImpl implements ServiceVacina {
 
     @Override
     public boolean loteExistente(Vacina vacina) {
+        String loteAtual = vacina.getLote().toUpperCase();  // Converter para maiúsculas para tornar a comparação case-insensitive
         return obterTodos().stream()
-                .anyMatch(v -> v.getLote().equals(vacina.getLote()));
+                .anyMatch(v -> v.getLote().toUpperCase().equals(loteAtual));
+    }
+
+    @Override
+    public boolean nomeVacinaExistente(Vacina vacina) {
+        String nomeAtual = vacina.getNome().toUpperCase();
+        return obterTodos().stream()
+                .anyMatch(v -> v.getNome().toUpperCase().equals(nomeAtual));
+    }
+
+    @Override
+    public boolean dataNoFuturo(String dataValidadeString) {
+        try {
+            // Converter a String para LocalDate
+            LocalDate dataValidade = LocalDate.parse(dataValidadeString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            // Comparar com a data atual
+            return dataValidade.isAfter(LocalDate.now());
+        } catch (DateTimeParseException e) {
+            // Adicionar log para registrar a exceção
+            LOGGER.error("Erro ao converter a data de validade: {}", e.getMessage(), e);
+            return false;
+        }
     }
 
     @Override
@@ -101,24 +211,6 @@ public class ServiceVacinaImpl implements ServiceVacina {
         return vacinaU;
     }
 
-    @Override
-    public void editarParcial(Vacina vacina) {
-        Vacina vacinaEncontrado = this.obterPorId(vacina.getId());
-
-        if (vacina == null) {
-            throw new VacinaNotFoundException("Vacina não encontrado!");
-        } else if (vacinaEncontrado == null) {
-            throw new VacinaNotFoundException("Vacina não encontrado, informe o identificador!");
-        }
-
-        vacina = this.compareEdite(vacina, vacinaEncontrado);
-
-        if (!vacina.equals(vacinaEncontrado)) {
-            vacinaRepository.save(vacina);
-            LOGGER.info("Paciente com id " + vacina.getId() + " editado parcialmente com sucesso!");
-
-        }
-    }
 
     @Override
     public void inject() {
@@ -129,33 +221,6 @@ public class ServiceVacinaImpl implements ServiceVacina {
         Vacina vacinaCinco = new Vacina("65582566c691757a205e3306","Pfizer-BioNTech","Pfizer","P123A","2023-12-31",2,21);
         List<Vacina> vacinaInjectadas = new ArrayList<>(Arrays.asList(vacinaUm, vacinaDois, vacinaTres, vacinaQuatro, vacinaCinco));
         vacinaRepository.saveAll(vacinaInjectadas);
-    }
-
-    @Override
-    public void editarParcialPorId(String id, Vacina vacina) {
-        Vacina vacinaEncontrada = this.obterPorId(id);
-        if (id == null || vacina == null || vacinaEncontrada == null) {
-            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
-        }
-        vacina.setId(id);
-        vacina = this.compareEdite(vacina,vacinaEncontrada);
-        vacinaRepository.save(vacina);
-        LOGGER.info("Vacina com id "+ id +" foi editada por completo!");
-
-    }
-
-    @Override
-    public void editar(Vacina vacina) {
-        if (vacina.getId() == null || this.obterPorId(vacina.getId()) == null) {
-            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
-        }
-        vacinaRepository.save(vacina);
-        LOGGER.info("Vacina com id "+ vacina.getId() +" foi editada por completo!");
-    }
-    @Override
-    public void editarPorId(String id, Vacina vacina) {
-        vacina.setId(id);
-        this.editar(vacina);
     }
 
 

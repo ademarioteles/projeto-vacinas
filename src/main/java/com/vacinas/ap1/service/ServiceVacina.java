@@ -14,6 +14,10 @@ public interface ServiceVacina {
 
     boolean loteExistente(Vacina vacina);
 
+    boolean nomeVacinaExistente(Vacina vacina);
+
+    boolean dataNoFuturo(String dataString);
+
     void deletarPorId(String id);
     void deletarTodos();
     Vacina compareEdite(Vacina vacinaU, Vacina vacinaD);
@@ -21,5 +25,7 @@ public interface ServiceVacina {
     void editarPorId(String id, Vacina vacina);
     void editarParcialPorId(String id, Vacina vacina);
     void editarParcial(Vacina vacina);
+
+
     void inject();
 }

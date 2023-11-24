@@ -29,11 +29,11 @@ public class Vacina {
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$",message = "A data deve ter um formato igual a 2023-07-29")
     private String data_validade;
 
-    @Min(value = 0, message = "O número de doses não pode ser negativo")
+    @Min(value = 1, message = "O número de doses deve ser maior que zero.")
     @NotNull(message = "O número de doses não foi informado!")
     private Integer numero_de_doses;
 
-    @Min(value = 0, message = "O intervalo de doses não pode ser negativo")
+    @Min(value = 0, message = "O intervalo de doses deve ser positivo.")
     private Integer intervalo_doses;
 
     @Override
