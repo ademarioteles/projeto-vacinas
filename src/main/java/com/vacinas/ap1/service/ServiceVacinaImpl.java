@@ -47,14 +47,14 @@ public class ServiceVacinaImpl implements ServiceVacina {
     public void inserir(Vacina vacina) {
         if(this.existeVacina(vacina)){
             throw new VacinaNotInsertExeption("Vacina existente na base!");
-        }
-        else if(this.loteExistente(vacina)){
-            throw new VacinaNotInsertExeption("Lote informado existente na base!");
-        }else if (this.nomeVacinaExistente(vacina)) {
-            throw new VacinaNotInsertExeption("O nome da vacina informado existente na base!");
         } else if (this.dataNoFuturo(vacina.getData_validade())) {
             throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
+        }else if(this.loteExistente(vacina)) {
+            throw new VacinaNotInsertExeption("Lote informado existente na base!");
+        }else if (this.nomeVacinaExistente(vacina) && this.loteExistente(vacina)) {
+            throw new VacinaNotInsertExeption("O nome da vacina informado já existe na base com o mesmo lote!");
         }
+
 
         vacina.setLote(vacina.getLote().toUpperCase());
         vacina.setNome(vacina.getNome().toUpperCase());
@@ -69,26 +69,26 @@ public class ServiceVacinaImpl implements ServiceVacina {
 
         if (vacina == null) {
             throw new VacinaNotFoundException("Vacina não encontrado!");
-        } else if (this.loteExistente(vacina)) {
-        throw new VacinaNotInsertExeption("Lote informado existente na base!");
         } else if (vacina.getNumero_de_doses() <= 0) {
         throw new VacinaNotInsertExeption("O número de doses deve ser maior que zero.");
         } else if (vacina.getIntervalo_doses() < 0) {
         throw new VacinaNotInsertExeption("O intervalo de doses deve ser positivo.");
-        } else if (this.nomeVacinaExistente(vacina)) {
-        throw new VacinaNotInsertExeption("O nome da vacina informado existente na base!");
+        }else if (this.nomeVacinaExistente(vacina) && this.loteExistente(vacina)
+                && (!vacinaEncontrado.getLote().equals(vacina.getLote())
+                && !vacinaEncontrado.getNome().equals(vacina.getNome())) ) {
+            throw new VacinaNotInsertExeption("O nome da vacina informado já existe na base com o mesmo lote!");
         } else if (this.dataNoFuturo(vacina.getData_validade())) {
         throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
         }
 
-        vacina.setId(id);
+        vacina.setId(vacina.getId());
         vacina.setLote(vacina.getLote().toUpperCase());
         vacina.setNome(vacina.getNome().toUpperCase());
         vacina.setFabricante(vacina.getFabricante().toUpperCase());
         vacina = this.compareEdite(vacina, vacinaEncontrado);
         if (!vacina.equals(vacinaEncontrado)) {
             vacinaRepository.save(vacina);
-            LOGGER.info("Paciente com id " + vacina.getId() + " editado parcialmente com sucesso!");
+            LOGGER.info("A Vacina com id " + vacina.getId() + " editado parcialmente com sucesso!");
 
         }
     }
@@ -98,24 +98,24 @@ public class ServiceVacinaImpl implements ServiceVacina {
         Vacina vacinaEncontrada = this.obterPorId(id);
         if (id == null || vacina == null || vacinaEncontrada == null) {
             throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
-        } else if (this.loteExistente(vacina)) {
-            throw new VacinaNotInsertExeption("Lote informado existente na base!");
-        } else if (vacina.getNumero_de_doses() <= 0) {
+        }else if (vacina.getNumero_de_doses() <= 0) {
             throw new VacinaNotInsertExeption("O número de doses deve ser maior que zero.");
         } else if (vacina.getIntervalo_doses() < 0) {
             throw new VacinaNotInsertExeption("O intervalo de doses deve ser positivo.");
-        } else if (this.nomeVacinaExistente(vacina)) {
-            throw new VacinaNotInsertExeption("O nome da vacina informado existente na base!");
+        } else if (this.nomeVacinaExistente(vacina) && this.loteExistente(vacina)
+                && !vacinaEncontrada.getLote().equals(vacina.getLote())
+                && !vacinaEncontrada.getNome().equals(vacina.getNome())) {
+            throw new VacinaNotInsertExeption("O nome da vacina informado já existe na base com o mesmo lote!");
         } else if (this.dataNoFuturo(vacina.getData_validade())) {
             throw new VacinaNotInsertExeption("A data de validade deve ser no futuro!");
         }
-        vacina.setId(id);
+        vacina.setId(vacina.getId());
         vacina.setLote(vacina.getLote().toUpperCase());
         vacina.setNome(vacina.getNome().toUpperCase());
         vacina.setFabricante(vacina.getFabricante().toUpperCase());
         vacina = this.compareEdite(vacina, vacinaEncontrada);
         vacinaRepository.save(vacina);
-        LOGGER.info("Vacina com id " + id + " foi editada por completo!");
+        LOGGER.info("Vacina com id " + id + " editado parcialmente com sucesso");
     }
 
     @Override
@@ -133,6 +133,7 @@ public class ServiceVacinaImpl implements ServiceVacina {
         }
         vacina.setId(id);
         this.editar(vacina);
+        LOGGER.info("Vacina com id "+ vacina.getId() +" foi editada por completo!");
     }
 
 

@@ -80,7 +80,7 @@ public class VacinaController {
 
     @PatchMapping("/vacinas")
     public ResponseEntity<Vacina> atualizarParcialmenteVacina(@RequestBody Vacina vacinaEditada) {
-        serviceVacina.editar(vacinaEditada);
+        serviceVacina.editarParcial(vacinaEditada);
 
         return ResponseEntity.ok(vacinaEditada);
     }
