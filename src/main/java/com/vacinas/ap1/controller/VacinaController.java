@@ -100,7 +100,7 @@ public class VacinaController {
         serviceVacina.deletarTodos();
         return ResponseEntity.status(200)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new Mensagem("Vacina excluída com sucesso!"));
+                .body(new Mensagem("Vacinas excluídas com sucesso!"));
     }
 
     @GetMapping("/sanhok")

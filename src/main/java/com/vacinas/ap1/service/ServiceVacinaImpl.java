@@ -42,6 +42,9 @@ public class ServiceVacinaImpl implements ServiceVacina {
         if(this.existeVacina(vacina)){
             throw new VacinaNotInsertExeption("Vacina existente na base!");
         }
+        else if(this.loteExistente(vacina)){
+            throw new VacinaNotInsertExeption("Lote informado existente na base!");
+        }
         vacinaRepository.insert(vacina);
         LOGGER.info("Vacina com id " + vacina.getId() +" foi inserida com sucesso!");
     }
@@ -55,6 +58,12 @@ public class ServiceVacinaImpl implements ServiceVacina {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean loteExistente(Vacina vacina) {
+        return obterTodos().stream()
+                .anyMatch(v -> v.getLote().equals(vacina.getLote()));
     }
 
     @Override
@@ -94,14 +103,21 @@ public class ServiceVacinaImpl implements ServiceVacina {
 
     @Override
     public void editarParcial(Vacina vacina) {
-        Vacina vacinaEncontrada = this.obterPorId(vacina.getId());
-        if (vacina.getId() == null || vacina == null || vacinaEncontrada == null) {
-            throw new VacinaNotFoundException("Vacina(s) não encontrada(s)");
+        Vacina vacinaEncontrado = this.obterPorId(vacina.getId());
+
+        if (vacina == null) {
+            throw new VacinaNotFoundException("Vacina não encontrado!");
+        } else if (vacinaEncontrado == null) {
+            throw new VacinaNotFoundException("Vacina não encontrado, informe o identificador!");
         }
-        vacina.setId(vacina.getId());
-        vacina = this.compareEdite(vacina,vacinaEncontrada);
-        vacinaRepository.save(vacina);
-        LOGGER.info("Vacina com id "+ vacina.getId() +" foi editada parcialmente!");
+
+        vacina = this.compareEdite(vacina, vacinaEncontrado);
+
+        if (!vacina.equals(vacinaEncontrado)) {
+            vacinaRepository.save(vacina);
+            LOGGER.info("Paciente com id " + vacina.getId() + " editado parcialmente com sucesso!");
+
+        }
     }
 
     @Override
